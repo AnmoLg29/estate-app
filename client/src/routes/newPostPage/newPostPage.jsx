@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./newPostPage.scss";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,29 +10,6 @@ function NewPostPage() {
   const [value, setValue] = useState("");
   const [images, setImages] = useState([]);
   const [error, setError] = useState("");
-  const [latitudeAuto, setLatitude] = useState(null);
-  const [longitudeAuto, setLongitude] = useState(null);
-  
-
-  useEffect(() => {
-    // Check if Geolocation is supported by the browser
-    if (!navigator.geolocation) {
-      setError('Geolocation is not supported by your browser');
-      return;
-    }
-
-    // Get the current position
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLatitude(position.coords.latitude);
-        setLongitude(position.coords.longitude);
-      },
-      (error) => {
-        setError('Unable to retrieve your location');
-      }
-    );
-  }, []);
-
 
   const navigate = useNavigate()
 
@@ -52,8 +29,8 @@ function NewPostPage() {
           bathroom: parseInt(inputs.bathroom),
           type: inputs.type,
           property: inputs.property,
-          latitude: latitudeAuto.toString(),
-          longitude: longitudeAuto.toString(),
+          latitude: inputs.latitude,
+          longitude: inputs.longitude,
           images: images,
         },
         postDetail: {
@@ -110,11 +87,11 @@ function NewPostPage() {
             </div>
             <div className="item">
               <label htmlFor="latitude">Latitude</label>
-              <input id="latitude" name="latitude" type="text" value={latitudeAuto} />
+              <input id="latitude" name="latitude" type="text" />
             </div>
             <div className="item">
               <label htmlFor="longitude">Longitude</label>
-              <input id="longitude" name="longitude" type="text" value={longitudeAuto}/>
+              <input id="longitude" name="longitude" type="text" />
             </div>
             <div className="item">
               <label htmlFor="type">Type</label>
@@ -187,7 +164,7 @@ function NewPostPage() {
         <UploadWidget
           uwConfig={{
             multiple: true,
-            cloudName: "anmoldb",
+            cloudName: "lamadev",
             uploadPreset: "estate",
             folder: "posts",
           }}
